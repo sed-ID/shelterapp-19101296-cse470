@@ -4,10 +4,13 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Donation;
 use App\Models\Foundation;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class IndexController extends Controller
@@ -69,13 +72,15 @@ class IndexController extends Controller
 
     public function ActivityDetails($activity_id){
         $activity=Activity::where('id',$activity_id)->with('user','foundation')->first();
-
-        return view('frontend.details.activity_details',compact('activity'));
+        $activities=\App\Models\Activity::with('user','foundation')->latest()->take(5)->get();
+        return view('frontend.details.activity_details',compact('activity','activities'));
     }
     public function FoundationDetails($foundation_id){
+        $activities=\App\Models\Activity::with('user','foundation')->latest()->take(5)->get();
+        $rating=Review::where('foundation_id',$foundation_id)->avg('rating');
         $foundation=Foundation::where('id',$foundation_id)->with('user')->first();
 
-        return view('frontend.details.foundation_details',compact('foundation'));
+        return view('frontend.details.foundation_details',compact('foundation','activities','rating'));
     }
 
 

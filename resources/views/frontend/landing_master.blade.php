@@ -18,6 +18,10 @@
 </head>
 
 <body>
+@php
+    $activities=\App\Models\Activity::with('user','foundation')->latest()->take(5)->get();
+    $foundations=\App\Models\Foundation::with('user')->get();
+@endphp
 <div class="wrapper">
 {{--  Header starts--}}
     @include('frontend.body.header')

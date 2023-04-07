@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Donation;
 use App\Models\Foundation;
 use App\Models\Review;
 use Carbon\Carbon;
@@ -119,5 +120,10 @@ class FoundationController extends Controller
         );
         return redirect()->back()->with($notification);
 
+    }
+    public function FoundationDonation(){
+        $foundations=Foundation::where('user_id',Auth::user()->id)->get('id');
+        $donations=Donation::whereIn('foundation_id',$foundations)->with('foundation')->get();
+        return view('backend.foundation.donation_details',compact('donations'));
     }
 }

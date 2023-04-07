@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\Admin;
+use App\Models\Comment;
 use App\Models\Donation;
 use App\Models\Foundation;
 use Illuminate\Http\Request;
@@ -78,6 +80,45 @@ class AdminProfileController extends Controller
             ->join('foundations', 'donations.foundation_id', '=', 'foundations.id')
             ->groupBy('foundations.id')
             ->get();
-        return view('backend.foundation.donation_report',compact('donations'));
+        return view('admin.donation_report',compact('donations'));
     }
+    public function DonationDetails(){
+        $donations=Donation::with('foundation')->get();
+        return view('admin.donation_details',compact('donations'));
+    }
+    public function ActivityDetails(){
+        $activities=Activity::with('foundation','user')->get();
+        return view('admin.activity_details',compact('activities'));
+
+    }
+    public function ActivityDelete($id){
+        Activity::where('id',$id)->delete();
+        $notification=array(
+            'message'=>'Activity Deleted Successfully',
+            'alert-type'=>'success'
+        );
+        return redirect()->route('all.activities')->with($notification);
+    }
+    public function AdminComments(){
+        $comments=Comment::with('activity')->get();
+        return view('admin.all_comments',compact('comments'));
+    }
+    public function CommentDelete($id){
+        Comment::where('id',$id)->delete();
+        $notification=array(
+            'message'=>'Comment Deleted Successfully',
+            'alert-type'=>'success'
+        );
+        return redirect()->route('admin.all.comments')->with($notification);
+    }
+    public function AdminDeleteFoundation($id){
+        Foundation::find($id)->delete();
+        $notification=array(
+            'message'=>'Foundation Deleted Successfully',
+            'alert-type'=>'success'
+        );
+        return redirect()->route('view.foundation')->with($notification);
+
+    }
+
 }

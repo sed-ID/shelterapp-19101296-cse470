@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" href="{{asset('../images/favicon.ico')}}">
 
-    <title>User - Dashboard</title>
+    <title>Admin - Dashboard</title>
 
     <!-- Vendors Style-->
     <link rel="stylesheet" href="{{asset('backend/css/vendors_css.css')}}">
@@ -27,80 +27,31 @@
 <div class="wrapper">
 
     {{--    Main Header--}}
-    @include('frontend.profile.body.header')
+    @include('admin.body.header')
 
     <!-- Left side column. contains the logo and sidebar -->
     {{--    main Sidebar--}}
-    @include('frontend.profile.body.sidebar')
+    @include('admin.body.sidebar')
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+
         <div class="container-full">
+            <!-- Content Header (Page header) -->
+
 
             <!-- Main content -->
             <section class="content">
-                @php
-                    $foundation=\App\Models\Foundation::where('user_id',\Illuminate\Support\Facades\Auth::user()->id)->count('id');
-                    $activity=\App\Models\Activity::where('user_id',\Illuminate\Support\Facades\Auth::user()->id)->count('id');
-                    $foundation_id=\App\Models\Foundation::where('user_id',\Illuminate\Support\Facades\Auth::user()->id)->get('id');
-                    $donation=\App\Models\Donation::whereIn('foundation_id',$foundation_id)->sum('amount');
-                @endphp
                 <div class="row">
-                    <div class="col-xl-4 col-6">
-                        <div class="box overflow-hidden pull-up">
-                            <div class="box-body">
-                                <div class="icon bg-warning-light rounded w-60 h-60">
-                                    <i class="text-warning mr-0 font-size-24 mdi mdi-car"></i>
-                                </div>
-                                <div>
-                                    <p class="text-mute mt-20 mb-0 font-size-16">Foundations</p>
-                                    <h3 class="text-white mb-0 font-weight-500">{{$foundation}}<small class="text-success"><i class="fa fa-caret-up"></i></small></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-6">
-                        <div class="box overflow-hidden pull-up">
-                            <div class="box-body">
-                                <div class="icon bg-info-light rounded w-60 h-60">
-                                    <i class="text-info mr-0 font-size-24 mdi mdi-sale"></i>
-                                </div>
-                                <div>
-                                    <p class="text-mute mt-20 mb-0 font-size-16">Activity</p>
-                                    <h3 class="text-white mb-0 font-weight-500">{{$activity}} <small class="text-danger"><i class="fa fa-caret-down"></i></small></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-6">
-                        <div class="box overflow-hidden pull-up">
-                            <div class="box-body">
-                                <div class="icon bg-danger-light rounded w-60 h-60">
-                                    <i class="text-danger mr-0 font-size-24 mdi mdi-phone-incoming"></i>
-                                </div>
-                                <div>
-                                    <p class="text-mute mt-20 mb-0 font-size-16">Donations</p>
-                                    <h3 class="text-white mb-0 font-weight-500">{{$donation}} BDT<small class="text-success"><i class="fa fa-caret-up"></i></small></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
 
                     <div class="col-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <h4 class="box-title align-items-start flex-column">
-                                    Latest Donations
-                                    <small class="subtitle"></small>
-                                </h4>
-                            </div>
-                            <div class="box-body">
-                                @php
-                                    $donations=\App\Models\Donation::whereIn('foundation_id',$foundation_id)->with('foundation')->latest()->take(5)->get();
 
-                                @endphp
+                        <div class="box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">All Donations</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
                                 <div class="table-responsive">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
@@ -143,16 +94,33 @@
                                     </table>
                                 </div>
                             </div>
+                            <!-- /.box-body -->
                         </div>
+                        <!-- /.box -->
+
+
+                        <!-- /.box -->
                     </div>
+                    <!-- /.col -->
+
+
+
+
                 </div>
+                <!-- /.row -->
             </section>
+
+            <!-- Main content -->
+
             <!-- /.content -->
         </div>
+
+
+
     </div>
     <!-- /.content-wrapper -->
     {{--   Main Footer--}}
-    @include('frontend.profile.body.footer')
+    @include('admin.body.footer')
 
     <!-- Control Sidebar -->
 
@@ -177,6 +145,7 @@
 <script src="{{asset('backend/js/pages/dashboard.js')}}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
     @if(Session::has('message'))
     var type = "{{ Session::get('alert-type','info') }}"
@@ -198,6 +167,46 @@
             break;
     }
     @endif
+</script>
+<script type="text/javascript">
+    function mainThumbnailUrl(input){
+        if(input.files && input.files[0]){
+            let reader = new FileReader();
+            reader.onload = function(e){
+                $('#mainThumbnail').attr('src',e.target.result).width(80).height(80);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(function(){
+        $(document).on('click','#delete', function(e){
+            e.preventDefault();
+            let link=$(this).attr('href');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href=link;
+                    Swal.fire(
+                        'Deleted!',
+                        'Selected data has been deleted.',
+                        'success'
+                    )
+                }
+            })
+        })
+    })
+
 </script>
 
 

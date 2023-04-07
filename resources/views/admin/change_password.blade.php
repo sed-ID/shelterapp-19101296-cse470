@@ -8,7 +8,7 @@
             <!-- Basic Forms -->
             <div class="box">
                 <div class="box-header with-border">
-                    <h4 class="box-title">Site Setting</h4>
+                    <h4 class="box-title">Change Password</h4>
 
                 </div>
                 <!-- /.box-header -->

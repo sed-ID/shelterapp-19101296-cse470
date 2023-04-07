@@ -14,8 +14,15 @@
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{{asset('details/assets/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('frontend_landing/css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{asset('frontend_landing/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{asset('frontend_landing/css/owl.carousel.min.css')}}">
+    <link rel="stylesheet" href="{{asset('frontend_landing/css/owl.theme.default.min.css')}}">
+
+    <link rel="stylesheet" href="{{asset('frontend_landing/responsive.css')}}">
 
     <!-- Customizable CSS -->
+    <link rel="stylesheet" href="{{asset('frontend_landing/style.css')}}">
     <link rel="stylesheet" href="{{asset('details/assets/css/main.css')}}">
     <link rel="stylesheet" href="{{asset('details/assets/css/blue.css')}}">
     <link rel="stylesheet" href="{{asset('details/assets/css/owl.carousel.css')}}">
@@ -37,12 +44,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{asset('frontend_landing/css/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{asset('frontend_landing/css/font-awesome.min.css')}}">
-    <link rel="stylesheet" href="{{asset('frontend_landing/css/owl.carousel.min.css')}}">
-    <link rel="stylesheet" href="{{asset('frontend_landing/css/owl.theme.default.min.css')}}">
-    <link rel="stylesheet" href="{{asset('frontend_landing/style.css')}}">
-    <link rel="stylesheet" href="{{asset('frontend_landing/responsive.css')}}">
+
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
@@ -142,6 +144,10 @@
 
 </head>
 <body class="cnt-home">
+@php
+    $activities=\App\Models\Activity::with('user','foundation')->latest()->take(5)->get();
+    $foundations=\App\Models\Foundation::with('user')->get();
+@endphp
 <!-- ============================================== HEADER ============================================== -->
 @include('frontend.body.header')
 <!-- ============================================== HEADER : END ============================================== -->
@@ -156,8 +162,9 @@
                         <img class="img-responsive" style="height: 350px; width: 100%" src="{{asset($foundation->image)}}" alt="">
                         <h1 class="text-center">Foundation Name: {{$foundation->name}}</h1>
                         <h1  class="text-center">Foundation Motto: {{$foundation->motto}}</h1>
+                        <h4  class="text-center">Rating: {{round($rating,1)}}</h4>
                         <span class="author">{{$foundation->user->name}}</span>
-                        <span class="review">7 Comments</span>
+
                         <span class="date-time">{{$foundation->created_at->format('l jS \\of F Y h:i:s A') }}</span>
                         <p>{{$foundation->description}}</p>
                     </div>
@@ -279,6 +286,30 @@
                                         <!-- ==============================================CATEGORY============================================== -->
                                         <div class="sidebar-widget outer-bottom-xs wow fadeInUp">
                                             <h3 class="section-title text-center">Donate</h3>
+                                            <div class="card mt-2 mb-2">
+                                                <h4 class="text-center">Top Donors</h4>
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col" class="text-center">Name</th>
+                                                        <th scope="col" class="text-center">Donations</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @php
+                                                        $top_donors= \App\Models\Donation::select('donations.name', \Illuminate\Support\Facades\DB::raw('SUM(donations.amount) as total_donations'))->where('foundation_id',$foundation->id)->groupBy('donations.phone')->orderByDesc('total_donations')->limit(3)->get();
+                                                    @endphp
+                                                    @foreach($top_donors as $donors)
+                                                    <tr>
+                                                        <td class="text-center">{{$donors->name}}</td>
+                                                        <td class="text-center">{{$donors->total_donations}}</td>
+                                                    </tr>
+                                                    @endforeach
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
                                             <div class="sidebar-widget-body m-t-10">
 
                                                 <div class="accordion">
@@ -511,28 +542,7 @@
 <script src="{{asset('frontend_landing/js/active.js')}}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    @if(Session::has('message'))
-    var type = "{{ Session::get('alert-type','info') }}"
-    switch(type){
-        case 'info':
-            toastr.info(" {{ Session::get('message') }} ");
-            break;
 
-        case 'success':
-            toastr.success(" {{ Session::get('message') }} ");
-            break;
-
-        case 'warning':
-            toastr.warning(" {{ Session::get('message') }} ");
-            break;
-
-        case 'error':
-            toastr.error(" {{ Session::get('message') }} ");
-            break;
-    }
-    @endif
-</script>
 
 <script type="text/javascript">
     var _gaq = _gaq || [];

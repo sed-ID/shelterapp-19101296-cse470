@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Donation extends Model
+class Comment extends Model
 {
     use HasFactory;
     protected $guarded=[];
-    public function foundation(){
-        return $this->belongsTo(Foundation::class,'foundation_id','id');
+    public function activity(){
+        return $this->belongsTo(Activity::class,'activity_id','id');
     }
 }

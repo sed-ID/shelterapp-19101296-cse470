@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="{{asset('../images/favicon.ico')}}">
 
-    <title>User - Dashboard</title>
+    <title>Admin - Dashboard</title>
 
     <!-- Vendors Style-->
     <link rel="stylesheet" href="{{asset('backend/css/vendors_css.css')}}">
@@ -27,11 +29,11 @@
 <div class="wrapper">
 
     {{--    Main Header--}}
-    @include('frontend.profile.body.header')
+    @include('admin.body.header')
 
     <!-- Left side column. contains the logo and sidebar -->
     {{--    main Sidebar--}}
-    @include('frontend.profile.body.sidebar')
+    @include('admin.body.sidebar')
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -48,7 +50,7 @@
 
                         <div class="box">
                             <div class="box-header with-border">
-                                <h3 class="box-title">All Foundations</h3>
+                                <h3 class="box-title">All Comments</h3>
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
@@ -56,33 +58,23 @@
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
+                                            <th>Activity</th>
                                             <th>Image</th>
-                                            <th>Name</th>
-                                            <th>Motto</th>
-                                            <th>Aprrove Status</th>
+                                            <th>Comment Title</th>
+                                            <th>Comment Body</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($foundations as $item)
+                                        @foreach($comments as $item)
                                             <tr>
-                                                <td><img src="{{asset($item->image)}}" style="width: 60px; height: 50px"></td>
-                                                <td>{{$item->name}}</td>
-                                                <td>{{$item->motto}}</td>
-                                                <td>
-                                                    @if ($item->approved == NULL)
-                                                        <span class="badge badge-pill badge-danger">Pending</span>
-                                                    @else
-                                                        <span class="badge badge-pill badge-success">Approved</span>
+                                                <td>{{$item->activity->title}}</td>
+                                                <td><img src="{{asset($item->activity->image)}}" style="width: 60px; height: 50px"></td>
+                                                <td>{{$item->title}}</td>
+                                                <td>{{$item->comment}}</td>
+                                                <td width="10%">
 
-                                                    @endif
-                                                </td>
-
-
-                                                <td width="30%">
-
-                                                    <a href="{{route('edit.foundation',$item->id)}}" class="btn btn-info" title="View & Edit Foundation"><i class="fa fa-pencil"></i></a>
-                                                    <a href="{{route('admin.delete.foundation',$item->id)}}" id="delete" class="btn btn-danger" title="Delete Foundation"><i class="fa fa-trash"></i></a>
+                                                    <a href="{{route('admin.delete.comment',$item->id)}}" id="delete" class="btn btn-danger" title="Delete Foundation"><i class="fa fa-trash"></i></a>
 
                                                 </td>
 
@@ -119,7 +111,7 @@
     </div>
     <!-- /.content-wrapper -->
     {{--   Main Footer--}}
-    @include('frontend.profile.body.footer')
+    @include('admin.body.footer')
 
     <!-- Control Sidebar -->
 
@@ -211,3 +203,7 @@
 
 </body>
 </html>
+
+
+
+

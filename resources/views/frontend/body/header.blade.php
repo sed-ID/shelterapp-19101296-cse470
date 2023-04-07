@@ -10,7 +10,7 @@
                 @auth
                     <div class="col-md-4 col-sm-4">
                         <div class="join-us">
-                            <p><a href="#">Profile</a></p>
+                            <p><a href="{{route('dashboard')}}">Profile</a></p>
                         </div>
                     </div>
                 @else
@@ -43,13 +43,10 @@
                 <div class="col-md-7 col-sm-12 col-xs-12">
                     <div class="menu">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="#">HOME</a></li>
-                            <li><a href="#">ABOUT US</a></li>
-                            <li><a href="#">CAUSES</a></li>
-                            <li><a href="#">EVENT</a></li>
-                            <li><a href="#">PORTFOLIO </a></li>
-                            <li><a href="#">BLOG</a></li>
-                            <li><a href="#">CONTACT</a></li>
+                            <li class="active"><a href="{{url('/')}}">HOME</a></li>
+                            <li><a href="#foundation">Foundation</a></li>
+                            <li><a href="#activity">Activities</a></li>
+
                         </ul>
                     </div>
                 </div>

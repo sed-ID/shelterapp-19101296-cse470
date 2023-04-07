@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Comment;
 use App\Models\Foundation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -123,5 +124,20 @@ class ActivityController extends Controller
         );
         return redirect()->route('view.activity')->with($notification);
 
+    }
+    public function StoreActivityComment(Request $request){
+        $activity_id=$request->activity_id;
+        Comment::insert([
+            'activity_id' => $activity_id,
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'title'=>$request->title,
+            'comment'=>$request->comment
+        ]);
+        $notification=array(
+            'message'=>'Comment Submitted Successfully',
+            'alert-type'=>'success'
+        );
+        return redirect()->back()->with($notification);
     }
 }
