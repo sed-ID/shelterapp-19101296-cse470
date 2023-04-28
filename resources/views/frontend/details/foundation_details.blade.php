@@ -10,7 +10,7 @@
     <meta name="keywords" content="MediaCenter, Template, eCommerce">
     <meta name="robots" content="all">
 
-    <title>Flipmart premium HTML5 & CSS3 Template</title>
+    <title>Shelter-Foundation Details</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{{asset('details/assets/css/bootstrap.min.css')}}">
@@ -139,6 +139,10 @@
             font-family: FontAwesome;
 
         }
+        iframe{
+            height: 300px !important;
+            width: 700px !important;
+        }
     </style>
 
 
@@ -166,7 +170,11 @@
                         <span class="author">{{$foundation->user->name}}</span>
 
                         <span class="date-time">{{$foundation->created_at->format('l jS \\of F Y h:i:s A') }}</span>
-                        <p>{{$foundation->description}}</p>
+                        <p>{{$foundation->description}}</p><br>
+                    
+                       {!!$foundation->video_link !!}
+                     
+                        
                     </div>
                     @php
                         $review=\App\Models\Review::where('foundation_id',$foundation->id)->with('user')->latest()->limit(5)->get();
@@ -410,7 +418,7 @@
         <div class="row">
             <div class="blog-page">
                 <div class="col-md-12">
-                    <section class="our_activity">
+                    <section id="activity" class="our_activity">
 
 
                         @php
