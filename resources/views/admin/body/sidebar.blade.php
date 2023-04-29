@@ -35,7 +35,6 @@
                 <ul class="treeview-menu">
                     <li><a href="{{route('all.foundations')}}"><i class="ti-more"></i>All Foundations</a></li>
                     <li><a href="{{route('donation.report')}}"><i class="ti-more"></i>Donation Report</a></li>
-                    <li><a href="{{route('donation.details')}}"><i class="ti-more"></i>Donation Details</a></li>
                 </ul>
             </li>
 

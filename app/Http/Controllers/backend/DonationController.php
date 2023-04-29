@@ -12,7 +12,7 @@ class DonationController extends Controller
 {
     public function DonateWithStripe(Request $request)
     {
-        \Stripe\Stripe::setApiKey('sk_test_51K411CAS0IFiYWoIHSmERtAF6cUOXiYexOYnFjqwYoPEoKyGMGzUF5A49wHTGW61lF64BBxXrqFlwNVRx7t2ghX600WX748aip');
+        \Stripe\Stripe::setApiKey('sk_test_51N23GySEmiVa8J1ufg6zVjzfYT9FlwjGleB2Uj9FYkMlSiLq5hKzSiOxNGHjeY5h2zaiHgxFYuTk9IR4HBNWAQTs00xyfyt1yl');
 
         // Token is created using Checkout or Elements!
 // Get the payment token ID submitted by the form:
